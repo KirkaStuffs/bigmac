@@ -129,7 +129,6 @@
 
     <div id="result" class="result" style="display:none;">
       <h3>Submitted Information:</h3>
-      <p><strong>Name:</strong> <span id="resultName"></span></p>
       <p><strong>Discord Name:</strong> <span id="resultDiscordName"></span></p>
       <p><strong>User ID:</strong> <span id="resultUserID"></span></p>
       <p><strong>Age:</strong> <span id="resultAge"></span></p>
@@ -181,7 +180,6 @@
       const applyDate = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
 
       // Show the submitted data on the page
-      document.getElementById("resultName").textContent = name;
       document.getElementById("resultDiscordName").textContent = discordName;
       document.getElementById("resultUserID").textContent = userID;
       document.getElementById("resultAge").textContent = age ? age : "Not provided";
@@ -204,7 +202,6 @@
 
       // Prepare the JSON object with the data
       const formData = {
-        name: name, // Use user's provided name
         discordName: discordName,
         userID: userID, // User ID is still used for the webhook name
         age: age ? age : "Not provided",
@@ -216,11 +213,11 @@
       // Create a Blob (file) from the JSON data
       const blob = new Blob([JSON.stringify(formData, null, 2)], { type: "application/json" });
       const formDataToSend = new FormData();
-      formDataToSend.append("file", blob, "formData.json");
+      formDataToSend.append("file", blob, "application.json");
 
       // Prepare the text message to send with a custom avatar (webhook icon) and webhook username (set to userID with #)
       const message = {
-        content: `**New Submission:**\nName: ${name}\nDiscord Name: ${discordName}\nUser ID: ${userID}\nAge: ${age ? age : "Not provided"}\nApplying For: ${applyingFor}\nWhy do you think we need you?: ${whyNeeded ? whyNeeded : "Not provided"}\nApply Date: ${applyDate}`,
+        content: `**New Submission:**\nDiscord Name: ${discordName}\nUser ID: ${userID}\nAge: ${age ? age : "Not provided"}\nApplying For: ${applyingFor}\nWhy do you think we need you?: ${whyNeeded ? whyNeeded : "Not provided"}\nApply Date: ${applyDate}`,
         avatar_url: "https://cdn.discordapp.com/icons/1088213108717256816/312ed6a28340935beb7ad1fc531673e5.png?size=1024", // Custom icon
         username: `#${userID}` // Add "#" before userID as the webhook username
       };
@@ -228,14 +225,14 @@
       // Send the text message and file to Discord webhook
       const formDataWithMessage = new FormData();
       formDataWithMessage.append("payload_json", JSON.stringify(message)); // Add message as JSON
-      formDataWithMessage.append("file", blob, "formData.json"); // Add JSON file
+      formDataWithMessage.append("file", blob, "application.json"); // Add JSON file
 
       // Send the combined data to Discord webhook
       fetch("https://discord.com/api/webhooks/1347613050949079143/vFRlHP8MQR2DNtp7HVtscZ0sKoHXZmQUl6LdbiBuuLq-OCQ7yJlJIFqP1nGLhEYYC5cJ", {
         method: "POST",
         body: formDataWithMessage
       })
-      .then(response => response.json())
+      .then(response => application.json())
       .then(data => {
         console.log("Success:", data);
       })
