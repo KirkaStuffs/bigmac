@@ -1,0 +1,10 @@
+[
+  {
+  "discordName": "${discordName}",
+  "userID": "${userID}",
+  "age": "${age}",
+  "applyingFor": "${applyingFor}",
+  "whyNeeded": "${whyNeeded}",
+  "applyDate": "${applyDate}"
+ }
+]
